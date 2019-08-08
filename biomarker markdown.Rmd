@@ -2,7 +2,10 @@
 title: "CXM Markdown"
 author: "Keaton"
 date: "8/8/2019"
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -32,20 +35,31 @@ plot(pressure)
 require(gamlss)
 library(gamlss)
 
-
 CXM <- read.csv("CXM normal data.csv", header=TRUE, sep=",")
+```
 
+
+
+
+
+
+
+```{r}
 # female <- subset(CXM, Sex == 'F', select=c("STUDY", "ID", "Sex", "Race", "Age", "Ht", "HtV", "Ht.z", "Wt.z", "BMI.z", "Genit.Tanner.Stage", "CXM"))
 # male <- subset(CXM, Sex == 'M', select=c("STUDY", "ID", "Sex", "Race", "Age", "Ht", "HtV", "Ht.z", "Wt.z", "BMI.z", "Genit.Tanner.Stage", "CXM"))
 # data(CXM)
-male <- subset(CXM, Sex == 'M', select=c("STUDY", "ID", "Sex", "Race", "Age", "Ht", "HtV", "Ht.z", "Wt.z", "BMI.z", "Genit.Tanner.Stage", "CXM"))
+male <- subset(CXM, Sex == 'M', select=c("Sex", "Age", "CXM"))
 #data(female)
-x<- male$Age
-y<- male$CXM
+#x<- male$Age
+#y<- male$CXM
+```
+
+
+```{r}
 #data=na.omit(female))
-h<-gamlss(y~pb(x), sigma.fo=~pb(x), family=BCT, data=na.omit(male)) 
+#h<-gamlss(y~pb(x), sigma.fo=~pb(x), family=BCT, data=na.omit(male)) 
 # default plot
-centiles(h,xvar=male$Age)
+#centiles(h,xvar=male$Age)
 # control of colours and lines
 centiles(h, xvar=male$Age,  col.cent=c(2,3,4,5,1,5,4,3,2,1), 
          lwd.cent=c(1,1,1,1,2,1,1,1,1))
@@ -60,9 +74,13 @@ rm(h)
 ```
 
 
+```{r}
+h<-gamlss(CXM~pb(Age), data=male) 
+```
 
-
-
+```{r}
+centiles(h, xvar=male$Age)
+```
 
 
 
