@@ -54,6 +54,11 @@ male <- subset(CXM, Sex == 'M', select=c("Sex", "Age", "CXM"))
 #y<- male$CXM
 ```
 
+```{r}
+youngmale <- subset(male, Age < 21, select=c("Sex", "Age", "CXM"))
+```
+
+
 
 ```{r}
 #data=na.omit(female))
@@ -73,14 +78,34 @@ centiles.fan(h,xvar=male$Age, colors="rainbow")
 rm(h)
 ```
 
+```{r}
+
+```
+
+#sigma.formula =~pb(Age)
 
 ```{r}
-h<-gamlss(CXM~pb(Age), data=male) 
+h<-gamlss(CXM~cs(youngmale$Age), sigma.fo=~cs(youngmale$Age), family = LOGNO(), data=youngmale) 
 ```
 
 ```{r}
-centiles(h, xvar=male$Age)
+centiles(h, xvar=youngmale$Age)
 ```
+
+
+```{r}
+centiles(h, xvar=youngmale$Age,  col.cent=c(1,2,3,4,5,4,3,2,1), 
+         lwd.cent=c(1,1,1,1,2,1,1,1,1))
+#Control line types
+centiles(h, xvar=youngmale$Age,  col.cent=1, cent=c(3,10,25,50,75,90,97), 
+         lty.centiles=c(4,3,2,1,2,3,4),lwd.cent=c(1,1,1,2,1,1,1))
+# control of the main title
+centiles(h, xvar=youngmale$Age,  main="Female CXM norms")
+# the fan-chart
+centiles.fan(h,xvar=youngmale$Age, colors="rainbow")
+rm(h)
+```
+
 
 
 
