@@ -15,16 +15,29 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+
+```{r}
+require(gamlss)
+library(gamlss)
+
+CXM <- read.csv("CXM normal data.csv", header=TRUE, sep=",")
+
+female <- subset(CXM, Sex == 'F', select=c("Sex", "Age", "CXM"))
+               
+youngfemale <- subset(female, Age < 21, select=c("Sex", "Age", "CXM"))
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+```{r}
+m1<- lms(CXM, Age, families = "BCTo", data=youngfemale,method.pb="ML",cent = c(3,10,25,50,75,90,97), calibration=TRUE, trans.x=TRUE )
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r}
+z<-z.scores(m1, youngfemale$CXM, youngfemale$Age)
+plot(youngfemale$Age, z,ylim=range(-4,4), xlim=range(0,21), col="red")
+```
+

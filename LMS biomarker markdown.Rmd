@@ -47,13 +47,13 @@ youngmale <- subset(male, Age < 21, select=c("Sex", "Age", "CXM"))
 ```{r}
 y<-youngmale$CXM
 x<-youngmale$Age
-m1<- lms(CXM, Age, families = "BCTo", data=youngmale,method.pb="ML",cent = c(3,10,25,50,75,90,97), calibration=TRUE, trans.x=TRUE )
+m1<- lms(CXM, Age, families = "BCTo", data=youngmale,method.pb="ML",cent = c(3,10,25,50,75,90,97), col.cent=4, lty.centiles=c(4,3,2,1,2,3,4), calibration=TRUE, trans.x=TRUE, main="Male CXM norms", xlim = range(0, 21), ylim=range(0, 110))
 
 ```
 
 ```{r}
 z<-z.scores(m1, youngmale$CXM, youngmale$Age)
-plot(youngmale$Age, z)
+plot(youngmale$Age, z, ylim=range(-4,4), xlim=range(0,21), pch=0, col="blue")
 ```
 
 
